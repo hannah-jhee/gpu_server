@@ -75,6 +75,7 @@ Available kernels:
   python3      /usr/local/miniconda3/share/jupyter/kernels/python3
 ```
 ### Running Jupyter Lab
+#### 1.
 Jupyter Lab or Jupyter Notebooks can be run remotely without browsing, and you can port-forward. Below is how to do this:
 1. Run this command at remote server, with the port as you wish.
    ```
@@ -87,3 +88,26 @@ Jupyter Lab or Jupyter Notebooks can be run remotely without browsing, and you c
    ```
 3. At your local browser, type `localhost:8080` to get to Jupyter Lab.
 4. Paste the token you have copied at 1.
+
+#### 2.
+If 1 is too much to you, try this:
+1. Create jupyter lab config file.
+   ```
+   (base) user@gpusystem:~$ jupyter lab --generate-config
+   ```
+3. In `Ipython`,
+   ```
+   >>> from notebook.auth import passwd
+   >>> passwd()
+   'argon:xxxxxxx'
+   ```
+   and copy the output.
+3. Modify these lines.
+   ```
+   # c.ServerApp.ip = 'localhost'        -->   c.ServerApp.ip = '*'
+   # c.ServerApp.port = ''               -->   c.ServerApp.port = '9090'
+   # c.ServerApp.password = ''           -->   c.ServerApp.password = u'argon:xxxxxxx'  # the output from passwd()
+   # c.ServerApp.open_browser = 'False'  -->   c.ServerApp.open_browser = False
+   ```
+3. Run `jupyter lab` in background (i.e. using `tmux`)
+4. In your local computer, type `http://172.xx.xx.xxx:9090`.
