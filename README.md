@@ -75,7 +75,7 @@ Available kernels:
   python3      /usr/local/miniconda3/share/jupyter/kernels/python3
 ```
 ### Running Jupyter Lab
-#### 1.
+#### 1. How to Port-forward Jupyter
 Jupyter Lab or Jupyter Notebooks can be run remotely without browsing, and you can port-forward. Below is how to do this:
 1. Run this command at remote server, with the port as you wish.
    ```
@@ -89,8 +89,8 @@ Jupyter Lab or Jupyter Notebooks can be run remotely without browsing, and you c
 3. At your local browser, type `localhost:8080` to get to Jupyter Lab.
 4. Paste the token you have copied at 1.
 
-#### 2.
-If 1 is too much to you, try this:
+#### 2. How to open Jupyter Server
+If 1 is too much to you, you can open jupyter server with security guaranteed by SSL.
 1. Create jupyter lab config file.
    ```
    (base) user@gpusystem:~$ jupyter lab --generate-config
@@ -102,12 +102,21 @@ If 1 is too much to you, try this:
    'argon:xxxxxxx'
    ```
    and copy the output.
-3. Modify these lines.
+3. Run these commands:
+   ```
+   (base) user@gpusystem:~$ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout mykey.key -out mycert.pem
+   (base) user@gpusystem:~$ mv mykey.key /home/user/.jupyter
+   (base) user@gpusystem:~$ mv mycert.pem /home/user/.jupyter
+   ```
+4. Modify these lines.
    ```
    # c.ServerApp.ip = 'localhost'        -->   c.ServerApp.ip = '*'
    # c.ServerApp.port = ''               -->   c.ServerApp.port = '9090'
    # c.ServerApp.password = ''           -->   c.ServerApp.password = u'argon:xxxxxxx'  # the output from passwd()
    # c.ServerApp.open_browser = 'False'  -->   c.ServerApp.open_browser = False
+   # c.ServerApp.certfile = ''           -->   c.ServerApp.certfile = '/home/user/.jupyter/mycert.pem'
+   # c.ServerApp.keyfile = ''            -->   c.ServerApp.keyfile = '/home/user/.jupyter/mykey.key'
    ```
 3. Run `jupyter lab` in background (i.e. using `tmux`)
-4. In your local computer, type `http://172.xx.xx.xxx:9090`.
+4. In your local computer, type `https://172.xx.xx.xxx:9090`.
+
