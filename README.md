@@ -61,6 +61,19 @@ If you'd like to create your own conda environments, run this command:
 ```
 `<user>` is your ID and `<env_name>` is the name of environment you want to create. Set the python version to the required one (i.e. 3.8). `--prefix` option is important.
 
+If you want to add the environments to jupyter kernelspec, run:
+```
+(base) user@gpusystem:~$ conda install ipykernel
+(base) user@gpusystem:~$ python -m ipykernel install --user --name <env_name> --display-name "<env_name>"
+```
+After you run the above, your environment will appear like this:
+```
+(base) user@gpusystem:~$ jupyter kernelspec list
+Available kernels:
+  <env_name>   /home/user/.local/share/jupyter/kernels/<env_name>
+  julia-1.8    /home/user/.local/share/jupyter/kernels/julia-1.8
+  python3      /usr/local/miniconda3/share/jupyter/kernels/python3
+```
 ### Running Jupyter Lab
 Jupyter Lab or Jupyter Notebooks can be run remotely without browsing, and you can port-forward. Below is how to do this:
 1. Run this command at remote server, with the port as you wish.
