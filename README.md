@@ -11,8 +11,10 @@ You may not need `ProxyCommand`, so check it out by yourself.
 
 ## Environmental Modules
 Currently available modules are
+ - boost/1.71.0
  - consistent-trees/1.0.1
  - cuda/11.2
+ - disperse/0.9.23
  - fsps/3.2
  - gsl/2.7.1
  - hdf5/1.10.8
